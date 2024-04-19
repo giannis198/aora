@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { Link, router } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
 import { images } from "../../constants";
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
-// import { createUser } from "../../lib/appwrite";
-
-// import { useGlobalContext } from "../../context/GlobalProvider";
+import { createUser } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/global-provider";
 
 const SignUp = () => {
-  // const { setUser, setIsLogged } = useGlobalContext();
+  const { setUser, setIsLogged } = useGlobalContext();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -21,23 +20,24 @@ const SignUp = () => {
   });
 
   const submit = async () => {
-    return;
-    // if (form.username === "" || form.email === "" || form.password === "") {
-    //   Alert.alert("Error", "Please fill in all fields");
-    // }
+    const { username, email, password } = form;
 
-    // setSubmitting(true);
-    // try {
-    //   const result = await createUser(form.email, form.password, form.username);
-    //   setUser(result);
-    //   setIsLogged(true);
+    if (username === "" || email === "" || password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
 
-    //   router.replace("/home");
-    // } catch (error) {
-    //   Alert.alert("Error", error.message);
-    // } finally {
-    //   setSubmitting(false);
-    // }
+    setSubmitting(true);
+    try {
+      const result = await createUser(email, password, username);
+      setUser(result);
+      setIsLogged(true);
+
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
