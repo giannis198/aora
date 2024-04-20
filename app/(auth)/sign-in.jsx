@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link, Redirect, router } from "expo-router";
+import { Link, router } from "expo-router";
 
 import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { images } from "../../constants";
@@ -27,7 +27,7 @@ const SignIn = () => {
     setSubmitting(true);
     try {
       await signIn(email, password);
-      const result = getCurrentUser();
+      const result = await getCurrentUser();
 
       setUser(result);
       setIsLogged(true);

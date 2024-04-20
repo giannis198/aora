@@ -5,14 +5,17 @@ import { useState } from "react";
 
 import { images } from "../../constants";
 
+import VideoCard from "../../components/VideoCard";
 import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
 import EmptyState from "../../components/EmptyState";
+
 import useAppwrite from "../../lib/useAppwrite";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
-import VideoCard from "../../components/VideoCard";
+import { useGlobalContext } from "../../context/global-provider";
 
 const Home = () => {
+  const { user } = useGlobalContext();
   const { data: posts, refetch, loading } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
   const [refreshing, setRefreshing] = useState(false);
@@ -42,10 +45,10 @@ const Home = () => {
             <View className="mb-6 flex-row items-start justify-between">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">
-                  Welcome Back
+                  Welcome Back,
                 </Text>
                 <Text className="font-psemibold text-2xl text-white">
-                  ioannisDev
+                  {user?.username}
                 </Text>
               </View>
               <View className="mt-1.5">
